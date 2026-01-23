@@ -1,0 +1,13 @@
+package com.chatroom.demo;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class ChatroomBeApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
+}

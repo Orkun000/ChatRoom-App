@@ -1,0 +1,36 @@
+{
+  "room": {
+    "defaultTitle": "Chat Odası",
+    "timeLeft": "Kalan Süre",
+    "calculating": "Hesaplanıyor...",
+    "expired": "Süre Doldu!",
+    "destroy": "Odayı Yok Et",
+    "destroyConfirmTitle": "Odayı silmek istediğine emin misin?",
+    "destroyConfirmDesc": "Bu işlem geri alınamaz ve tüm mesajlar silinir.",
+    "yesDelete": "Evet, Sil",
+    "cancel": "Vazgeç",
+    "deleteSuccess": "Oda başarıyla silindi.",
+    "deleteError": "Oda silinemedi.",
+    "notFound": "Oda bulunamadı veya süresi dolmuş!",
+    "guest":"Misafir_",
+    "editRoomSettings":"Oda Ayarlarını Düzenle",
+    "edit":"Düzenle",
+    "delete":"Sil",
+    "loading":"Yükleniyor...",
+    "yes":"Evet",
+    "no":"Hayır"
+  },
+  "connection": {
+    "online": "Online",
+    "connecting": "Bağlanıyor...",
+    "connected": "Bağlandı",
+    "disconnected": "Bağlantı koptu"
+  },
+  "chat": {
+    "placeholder": "Bir şeyler yaz...",
+    "send": "Gönder",
+    "activeUsers": "Aktif Kişiler",
+    "you": "Sen",
+    "onlineUser": "Çevrimiçi"
+  }
+}

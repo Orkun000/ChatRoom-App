@@ -1,0 +1,26 @@
+# --- BACKEND (demo klasörü) ---
+demo/target/
+demo/.mvn/
+demo/mvnw
+demo/mvnw.cmd
+demo/.idea/
+demo/*.iml
+demo/help.md
+demo/.settings/
+demo/.classpath
+demo/.project
+
+# --- FRONTEND (chat-fe klasörü) ---
+chat-fe/node_modules/
+chat-fe/build/
+chat-fe/dist/
+chat-fe/.env
+chat-fe/.DS_Store
+chat-fe/coverage/
+chat-fe/.vscode/
+
+# --- GENEL / IDE DOSYALARI ---
+.idea/
+.vscode/
+*.log
+**/.DS_Store
