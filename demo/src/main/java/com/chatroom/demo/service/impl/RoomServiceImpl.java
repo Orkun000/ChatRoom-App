@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -31,7 +32,8 @@ public class RoomServiceImpl implements RoomService {
         // Max 24 saat kontrolü
         int duration = Math.min(request.getDurationHours(), AppConstants.MAX_ROOM_DURATION_HOURS);
         room.setExpiryDate(LocalDateTime.now().plusHours(duration));
-
+        room.setListed(request.isListed());
+        room.setPassword(request.getPassword());
         return roomRepository.save(room);
     }
 
@@ -64,5 +66,16 @@ public class RoomServiceImpl implements RoomService {
         room.setName(request.getName());
         room.setExpiryDate(room.getExpiryDate().plusHours(request.getDurationHours()));
         return roomRepository.save(room);
+    }
+    @Override
+    public List<ChatRoom> getPublicRooms() {
+        return roomRepository.findAllByIsListedTrue();
+    }
+    @Override
+    public boolean verifyPassword(String roomId, String password) {
+        ChatRoom room = roomRepository.findByRoomId(roomId)
+                .orElseThrow(() -> new RuntimeException(AppConstants.ROOM_NOT_FOUND));
+        if (room.getPassword() == null || room.getPassword().isEmpty()) return true;
+        return room.getPassword().equals(password);
     }
 }

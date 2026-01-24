@@ -19,4 +19,9 @@ export const roomApi = {
   update: (roomId, data) => {
     return axiosClient.post(`/rooms/update/${roomId}`, data);
   },
+  getPublicRooms: () => axiosClient.get("/rooms/public"),
+  verifyPassword: (roomId, password) =>
+    axiosClient.post(`/rooms/verify/${roomId}`, password, {
+      headers: { "Content-Type": "text/plain" },
+    }),
 };

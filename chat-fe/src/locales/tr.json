@@ -12,13 +12,44 @@
     "deleteSuccess": "Oda başarıyla silindi.",
     "deleteError": "Oda silinemedi.",
     "notFound": "Oda bulunamadı veya süresi dolmuş!",
-    "guest":"Misafir_",
-    "editRoomSettings":"Oda Ayarlarını Düzenle",
-    "edit":"Düzenle",
-    "delete":"Sil",
-    "loading":"Yükleniyor...",
-    "yes":"Evet",
-    "no":"Hayır"
+    "guest": "Misafir_",
+    "editRoomSettings": "Oda Ayarlarını Düzenle",
+    "edit": "Düzenle",
+    "delete": "Sil",
+    "loading": "Yükleniyor...",
+    "yes": "Evet",
+    "no": "Hayır",
+    "publicTag": "Herkese Açık",
+    "encryptedTag": "Şifreli",
+    "clickToJoin": "Katılmak için tıkla"
+  },
+  "home": {
+    "title": "Anonim Sohbet",
+    "subtitle": "İz bırakmadan konuş, süre dolunca her şey silinsin.",
+    "newRoomBtn": "Yeni Oda Kur",
+    "publicRoomsTitle": "Açık Odalar",
+    "createSuccess": "Oda kuruldu!",
+    "createError": "Oda oluşturulamadı.",
+    "wrongPassword": "Yanlış şifre!",
+    "verifyError": "Doğrulama hatası"
+  },
+  "createRoom": {
+    "modalTitle": "Yeni Oda Ayarları",
+    "roomNameLabel": "Oda İsmi",
+    "roomNamePlaceholder": "Örn: Geyik Muhabbeti",
+    "roomNameRequired": "İsim gerekli",
+    "isListedLabel": "Listede Görünsün",
+    "hiddenLabel": "Gizli",
+    "isEncryptedLabel": "Şifreli Giriş",
+    "passwordLabel": "Giriş Şifresi",
+    "passwordPlaceholder": "Şifre belirleyin",
+    "passwordRequired": "Şifre zorunludur",
+    "submitBtn": "Odayı Başlat"
+  },
+  "joinRoom": {
+    "modalTitle": "Şifreli Oda",
+    "placeholder": "Oda şifresini giriniz",
+    "submitBtn": "Giriş Yap"
   },
   "connection": {
     "online": "Online",

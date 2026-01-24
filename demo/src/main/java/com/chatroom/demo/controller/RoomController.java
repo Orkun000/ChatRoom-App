@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/rooms")
 @CrossOrigin(origins = "http://localhost:3000")
@@ -36,5 +38,16 @@ public class RoomController {
     public ResponseEntity<Void> updateRoom(@PathVariable String roomId,@RequestBody RoomRequest request) {
         roomService.updateRoom(roomId,request);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/public")
+    public ResponseEntity<List<ChatRoom>> getPublicRooms() {
+        return ResponseEntity.ok(roomService.getPublicRooms());
+    }
+
+    @PostMapping("/verify/{roomId}")
+    public ResponseEntity<Boolean> verifyRoomPassword(@PathVariable String roomId, @RequestBody String password) {
+        boolean isValid = roomService.verifyPassword(roomId, password.replace("\"", ""));
+        return ResponseEntity.ok(isValid);
     }
 }
