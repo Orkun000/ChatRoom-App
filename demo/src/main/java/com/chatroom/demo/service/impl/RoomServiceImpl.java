@@ -32,7 +32,7 @@ public class RoomServiceImpl implements RoomService {
         // Max 24 saat kontrolü
         int duration = Math.min(request.getDurationHours(), AppConstants.MAX_ROOM_DURATION_HOURS);
         room.setExpiryDate(LocalDateTime.now().plusHours(duration));
-        room.setListed(request.isListed());
+        room.setListed(request.isListedFlag());
         room.setPassword(request.getPassword());
         return roomRepository.save(room);
     }
