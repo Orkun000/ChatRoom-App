@@ -21,14 +21,14 @@ import {
   UsergroupAddOutlined,
   GlobalOutlined,
 } from "@ant-design/icons";
-import { useTranslation } from "react-i18next"; // ÇEVİRİ İÇİN EKLENDİ
+import { useTranslation } from "react-i18next";
 import { roomApi } from "../api/roomApi";
 
 const { Title, Text } = Typography;
 
 const Home = () => {
   const navigate = useNavigate();
-  const { t } = useTranslation(); // Hook'u başlattık
+  const { t } = useTranslation();
   const [publicRooms, setPublicRooms] = useState([]);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
@@ -60,18 +60,19 @@ const Home = () => {
       const payload = {
         name: values.name,
         durationHours: values.durationHours || 3,
-        isListed: values.isListed,
+        // DÜZELTME: Formdan gelen 'isListed' değerini backend'in istediği 'listedFlag'e atıyoruz.
+        listedFlag: values.isListed,
         password: values.password,
       };
 
       const res = await roomApi.create(payload);
 
       localStorage.setItem(`isAdmin_${res.data.roomId}`, "true");
-      message.success(t("home.createSuccess")); // Çeviri
+      message.success(t("home.createSuccess"));
       setIsCreateModalOpen(false);
       navigate(`/room/${res.data.roomId}`);
     } catch (error) {
-      message.error(t("home.createError")); // Çeviri
+      message.error(t("home.createError"));
     }
   };
 
@@ -92,10 +93,10 @@ const Home = () => {
       if (res.data === true) {
         navigate(`/room/${selectedRoomId}`);
       } else {
-        message.error(t("home.wrongPassword")); // Çeviri
+        message.error(t("home.wrongPassword"));
       }
     } catch (error) {
-      message.error(t("home.verifyError")); // Çeviri
+      message.error(t("home.verifyError"));
     }
   };
 
