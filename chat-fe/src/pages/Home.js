@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { observer } from "mobx-react-lite";
+import { useStore } from "../stores";
 import {
   Button,
   Input,
@@ -26,20 +28,13 @@ import { roomApi } from "../api/roomApi";
 
 const { Title, Text } = Typography;
 
-const Home = () => {
+const Home = observer(() => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const [publicRooms, setPublicRooms] = useState([]);
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-
-  // Şifreli Giriş State'leri
-  const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
-  const [selectedRoomId, setSelectedRoomId] = useState(null);
-  const [joinPassword, setJoinPassword] = useState("");
+  const { roomStore } = useStore();
 
   // Oda oluşturma formu
   const [form] = Form.useForm();
-  const [isPasswordEnabled, setIsPasswordEnabled] = useState(false);
 
   useEffect(() => {
     fetchRooms();
@@ -47,16 +42,20 @@ const Home = () => {
 
   const fetchRooms = async () => {
     try {
+      roomStore.setLoading(true);
       const res = await roomApi.getPublicRooms();
-      setPublicRooms(res.data);
+      roomStore.setPublicRooms(res.data);
     } catch (error) {
       console.error("Liste hatası", error);
+    } finally {
+      roomStore.setLoading(false);
     }
   };
 
   // --- ODA OLUŞTURMA İŞLEMLERİ ---
   const handleCreate = async (values) => {
     try {
+      roomStore.setLoading(true);
       const payload = {
         name: values.name,
         durationHours: values.durationHours || 3,
@@ -69,10 +68,12 @@ const Home = () => {
 
       localStorage.setItem(`isAdmin_${res.data.roomId}`, "true");
       message.success(t("home.createSuccess"));
-      setIsCreateModalOpen(false);
+      roomStore.setCreateModalOpen(false);
       navigate(`/room/${res.data.roomId}`);
     } catch (error) {
       message.error(t("home.createError"));
+    } finally {
+      roomStore.setLoading(false);
     }
   };
 
@@ -81,22 +82,28 @@ const Home = () => {
     if (!room.password) {
       navigate(`/room/${room.roomId}`);
     } else {
-      setSelectedRoomId(room.roomId);
-      setJoinPassword("");
-      setIsJoinModalOpen(true);
+      roomStore.setSelectedRoom(room.roomId);
+      roomStore.setJoinPassword("");
+      roomStore.setJoinModalOpen(true);
     }
   };
 
   const confirmJoin = async () => {
     try {
-      const res = await roomApi.verifyPassword(selectedRoomId, joinPassword);
+      roomStore.setLoading(true);
+      const res = await roomApi.verifyPassword(
+        roomStore.selectedRoomId,
+        roomStore.joinPassword,
+      );
       if (res.data === true) {
-        navigate(`/room/${selectedRoomId}`);
+        navigate(`/room/${roomStore.selectedRoomId}`);
       } else {
         message.error(t("home.wrongPassword"));
       }
     } catch (error) {
       message.error(t("home.verifyError"));
+    } finally {
+      roomStore.setLoading(false);
     }
   };
 
@@ -121,7 +128,7 @@ const Home = () => {
           type="primary"
           size="large"
           icon={<PlusOutlined />}
-          onClick={() => setIsCreateModalOpen(true)}
+          onClick={() => roomStore.setCreateModalOpen(true)}
         >
           {t("home.newRoomBtn")}
         </Button>
@@ -131,7 +138,7 @@ const Home = () => {
       <Title level={4}>{t("home.publicRoomsTitle")}</Title>
       <List
         grid={{ gutter: 16, xs: 1, sm: 2, md: 3, lg: 3, xl: 3, xxl: 3 }}
-        dataSource={publicRooms}
+        dataSource={roomStore.publicRooms}
         renderItem={(room) => (
           <List.Item>
             <Card
@@ -170,8 +177,8 @@ const Home = () => {
       {/* --- MODAL: ODA OLUŞTURMA --- */}
       <Modal
         title={t("createRoom.modalTitle")}
-        open={isCreateModalOpen}
-        onCancel={() => setIsCreateModalOpen(false)}
+        open={roomStore.isCreateModalOpen}
+        onCancel={() => roomStore.setCreateModalOpen(false)}
         footer={null}
       >
         <Form
@@ -209,14 +216,14 @@ const Home = () => {
             <Col span={12}>
               <Form.Item label={t("createRoom.isEncryptedLabel")}>
                 <Switch
-                  checked={isPasswordEnabled}
-                  onChange={setIsPasswordEnabled}
+                  checked={roomStore.isPasswordEnabled}
+                  onChange={roomStore.setPasswordEnabled}
                 />
               </Form.Item>
             </Col>
           </Row>
 
-          {isPasswordEnabled && (
+          {roomStore.isPasswordEnabled && (
             <Form.Item
               name="password"
               label={t("createRoom.passwordLabel")}
@@ -245,21 +252,21 @@ const Home = () => {
       {/* --- MODAL: ŞİFRELİ GİRİŞ --- */}
       <Modal
         title={t("joinRoom.modalTitle")}
-        open={isJoinModalOpen}
+        open={roomStore.isJoinModalOpen}
         onOk={confirmJoin}
-        onCancel={() => setIsJoinModalOpen(false)}
+        onCancel={() => roomStore.resetJoinModal()}
         okText={t("joinRoom.submitBtn")}
         cancelText={t("room.cancel")}
       >
         <Input.Password
           placeholder={t("joinRoom.placeholder")}
-          value={joinPassword}
-          onChange={(e) => setJoinPassword(e.target.value)}
+          value={roomStore.joinPassword}
+          onChange={(e) => roomStore.setJoinPassword(e.target.value)}
           onPressEnter={confirmJoin}
         />
       </Modal>
     </div>
   );
-};
+});
 
 export default Home;
